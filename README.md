@@ -1,6 +1,6 @@
 # Setup EFK stack
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/Screenshot%20from%202022-01-23%2013-57-04.png)
 
 
 # ElasticSearch
@@ -34,7 +34,7 @@ Here we changed the type: ClusterIP to type: LoadBalancer. We are exposing the e
 helm install elasticsearch --version 7.13.0 elastic/elasticsearch -f esvalues.yaml
 
 ```
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/elastic%20search1.png)
 
 ## Wait for few minutes. After that, you should see all the resources are up and running. Note the elasticsearch service’s external IP. In my case it is 10.116.200.220.
 
@@ -55,7 +55,7 @@ kubectl describe pod elasticsearch-master-0
  kubectl get pv,pvc
 
 ```
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/pv.png)
 
 ## Also note down the image id of the elasticsearch container. In should be 7.13.0
 
@@ -92,7 +92,7 @@ Wait for a few minutes to deploy. Finally you should see all the pods are deploy
 kubectl -n kube-system get all -l=k8s-app=fluentd-logging 
 
 ```
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/fluentd.png)
 
 # Kibana
 
@@ -122,7 +122,7 @@ kubectl get all -l=app=kibana
 
 ```
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/kibana.png)
 
 Note down the external ip. In my case it is 10.116.200.221.
 
@@ -132,23 +132,23 @@ Now you should be able to visit Kibana’s dashboard at http://10.116.200.221:56
 
 Go to stack management from left menu
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-03.png)
 
 Select index patterns > Create new index pattern
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-04.png)
 
 Since fluentd followed the logstash format, create the index logstash-*   to capture the logs coming from cluster
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-05.png)
 
 Finally put  @timestamp in time field and create the index pattern
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-06.png)
 
 Now go to Discover from left, you should see the logs
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-07.png)
 
 ## Testing the setup
 
@@ -176,5 +176,6 @@ See the logs
 $kubectl logs hellopod -f         
 
 ```
+Now in Kibana, if you search for kubernetes.pod_name.keyword: hellopod and filter with log and other fields from left, you should see the same logs in Kibana dashboard along with other informations. How cool is that 😃
 
-![alt text]()
+![alt text](https://github.com/anjanpaul/EFK-installation/blob/main/output%20image/efk-10.png)
